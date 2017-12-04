@@ -14,7 +14,6 @@ import queue
 q = queue.Queue()
 #"confirmGoodsCount":634,"soldTotalCount":995
 
-
 #https://detailskip.taobao.com/service/getData/1/p1/item/detail/sib.htm?itemId=44444180170&sellerId=94445060&modules=dynStock,qrcode,viewer,price,duty,xmpPromotion,delivery,upp,activity,fqg,zjys,amountRestriction,couponActivity,soldQuantity,originalPrice,tradeContract&callback=onSibRequestSuccess
 
 
@@ -55,7 +54,7 @@ def delete_proxy(proxy):
 
 def gethtml(url):
     try:
-        proxy = str(random.choice(proxy_ip))[2:-1]
+        proxy = str(random.choice(proxy_ip))
         r = requests.get(url,timeout = 10 , headers = headers , proxies = dict(http = 'http://{}'.format(proxy)))
         #if(r.status_code != 200):
         #   print("wrong");
@@ -66,23 +65,27 @@ def gethtml(url):
     except:
         return ""
 
-def parse_html(id):
+def parse_html(id,url):
     count = 5
-    html = 'https://mdskip.taobao.com/core/initItemDetail.htm?&itemId='+str(id)
+    html = 'https://mdskip.taobao.com/core/initItemDetail.htm?addressLevel=2&isAreaSell=false&service3C=false&cartEnable=true&queryMemberRight=true&isUseInventoryCenter=false&showShopProm=false&isForbidBuyItem=false&tryBeforeBuy=false&cachedTimestamp=1512371986997&isRegionLevel=false&tmallBuySupport=true&household=false&isPurchaseMallPage=false&isSecKill=false&isApparel=false&sellerPreview=false&offlineShop=false&itemId=' +str(id) + '&callback=setMdskip&timestamp=1512388710563&isg=null&isg2=Amhox9a2pi5mg4lmuy1et1hROV-6OdL1qzgX0SKZIOPefQjnyqGcK_79ASN2&ref=https%3A%2F%2Fs.taobao.com%2Fsearch%3Fq%3D%25E4%25B9%25A6%25E5%258C%2585%26imgfile%3D%26js%3D1%26stats_click%3Dsearch_radio_all%253A1%26initiative_id%3Dstaobaoz_20171119%26ie%3Dutf8'
+    header = headers
+    header['referer'] = 'https://detail.tmall.com/item.htm'
+    header['cookie'] = 'miid=2204118637502781093; v=0; cna=OldwEsEx8ggCAXUg2BpcrJoP; hng=CN%7Czh-CN%7CCNY%7C156; thw=cn; UM_distinctid=15f8c5b57023a5-0160ece53b0bf5-1227170b-1fa400-15f8c5b5705492; tk_trace=oTRxOWSBNwn9dPy4KVJVbutfzK5InlkjwbWpxHegXyGxPdWTLVRjn23RuZzZtB1ZgD6Khe0jl%2BAoo68rryovRBE2Yp933GccTPwH%2FTbWVnqEfudSt0ozZPG%2BkA1iKeVv2L5C1tkul3c1pEAfoOzBoBsNsJySRNvOSY9xGDUNOPipFnPYpbkOlsF%2FySSuK1LjLRXwSVrAAJ6uhqKKgwAhm7Vn6J%2F%2BBQum9LSSkQ7juhP8Wptgb59VNPre3M56pSRUjc6yCmUNijDS8RYxfRd7QyT7lHjTOJ8LuMu9HsodGNX5qWeLi6%2FnMyd6UjDQfoo8Mzk%2F5Pd2L7%2FbC0IXdJfO; whl=-1%260%260%261510277548811; ucn=unshyun; _tb_token_=33e11e6d13736; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0; linezing_session=NKYCLGnjBqZcbF5hZR80OFTY_1512388712170lXCt_5; uc1=cookie14=UoTdeYfCsXZFaA%3D%3D&lng=zh_CN&cookie16=VFC%2FuZ9az08KUQ56dCrZDlbNdA%3D%3D&existShop=false&cookie21=Vq8l%2BKCLjhS4UhJVbhgU&tag=8&cookie15=VT5L2FSpMGV7TQ%3D%3D&pas=0; uc3=nk2=tPEAllpDUYwe5KgY&id2=UUBb2LhspNHhgw%3D%3D&vt3=F8dBzLQKZIXfZohL%2FCg%3D&lg2=Vq8l%2BKCLz3%2F65A%3D%3D; existShop=MTUxMjM4OTUyNg%3D%3D; lgc=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; tracknick=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; cookie2=3355e2a725b37da4b7c113f3def1f1f7; sg=880; mt=np=&ci=-1_0; cookie1=UIZs8ssf3EgnX%2BXL4c7N%2BeFC%2FglSJABncU4IIVYc8bs%3D; unb=2832844388; skt=ef36b8c0e19e72d3; t=7a6950203c53d620ab6f0c16c4928a6c; _cc_=Vq8l%2BKCLiw%3D%3D; tg=0; _l_g_=Ug%3D%3D; _nk_=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; cookie17=UUBb2LhspNHhgw%3D%3D; isg=AlFRjLeH70XkdQCJ8OOVCXFHYFQrFtteav_eijPmPpgy2nEsew7VAP86CJjH'
     #html = url + str(id)
-    print(html)
+    #print(html)
     proxy = str(random.choice(proxy_ip))
     print(proxy)
     while count > 0:#尝试5次连接
         try:               #尝试用天猫网页来解析
-            r = requests.get(html, timeout=10, headers=headers, proxies =dict(http='http://{}'.format(proxy)))
+            r = requests.get(html, timeout=10, headers=header, proxies =dict(http='http://{}'.format(proxy)))
             r.endcoding = 'utf-8'
             print("http://%s"%(proxy))
             print(r.text)
             return r.text
         except:            #尝试淘宝页面来解析
             count-=1
-            print("wrong URL %s"%(html))
+            print("wrong proxy %s"%(proxy))
+    time.sleep(10)
     delete_proxy(proxy)
     return None
 def parse(info,html):
@@ -98,8 +101,13 @@ def parse(info,html):
             ot = t+str([it])
             q.put(it) #insert the url to queue
             #print(it)
-            parse_html(q.get())
-            info.append([price , title ,ot])
+            content = parse_html(q.get(),html)
+            if (content != None):
+                time.sleep(10)
+            sale = re.findall(r'"sellCount":(.*?),',content)
+            print(sale)
+            #print(sales)
+            info.append([price , title ,str(sale)])
             time.sleep(5)
             if(i > 3):
                 break;
@@ -107,7 +115,7 @@ def parse(info,html):
         #print("")
 def display(info):
     dislist = "{:4}\t{:4}\t{:4}\t{:4}"
-    print(dislist.format("序号","价格","商品名称","URL"))
+    print(dislist.format("序号","价格","商品名称","销量","位置"))
     count = 0;
     for g in info:
         count+=1
@@ -126,6 +134,6 @@ def main():
             parse(info,html)
         except:
             print('web wrong %s' %url)
-            continue;
+            #continue;
     #display(info)
 main()
