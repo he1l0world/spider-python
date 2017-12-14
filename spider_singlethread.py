@@ -9,6 +9,7 @@ import os
 import threading
 import urllib
 import queue
+import gc
 
 
 
@@ -75,7 +76,7 @@ def gethtml(url):
     except:
         return ""
 def check_ip(ip):
-    count = 5
+    count = 3
     url = 'http://www.baidu.com'
     while count > 0:
         try:
@@ -92,7 +93,7 @@ def parse_html(id,url):
     #htmlb = 'https://detailskip.taobao.com/service/getData/1/p1/item/detail/sib.htm?itemId='+ str(id)+'&sellerId=2584970863&modules=dynStock,qrcode,viewer,price,duty,xmpPromotion,delivery,upp,activity,fqg,zjys,amountRestriction,couponActivity,soldQuantity,originalPrice,tradeContract&callback=onSibRequestSuccess'
     header = headers
     header['referer'] = 'https://detail.tmall.com/item.htm'
-    header['cookie'] = 'miid=2204118637502781093; v=0; cna=OldwEsEx8ggCAXUg2BpcrJoP; hng=CN%7Czh-CN%7CCNY%7C156; thw=cn; UM_distinctid=15f8c5b57023a5-0160ece53b0bf5-1227170b-1fa400-15f8c5b5705492; tk_trace=oTRxOWSBNwn9dPy4KVJVbutfzK5InlkjwbWpxHegXyGxPdWTLVRjn23RuZzZtB1ZgD6Khe0jl%2BAoo68rryovRBE2Yp933GccTPwH%2FTbWVnqEfudSt0ozZPG%2BkA1iKeVv2L5C1tkul3c1pEAfoOzBoBsNsJySRNvOSY9xGDUNOPipFnPYpbkOlsF%2FySSuK1LjLRXwSVrAAJ6uhqKKgwAhm7Vn6J%2F%2BBQum9LSSkQ7juhP8Wptgb59VNPre3M56pSRUjc6yCmUNijDS8RYxfRd7QyT7lHjTOJ8LuMu9HsodGNX5qWeLi6%2FnMyd6UjDQfoo8Mzk%2F5Pd2L7%2FbC0IXdJfO; uc3=nk2=tPEAllpDUYwe5KgY&id2=UUBb2LhspNHhgw%3D%3D&vt3=F8dBzLQKZIXfZohL%2FCg%3D&lg2=Vq8l%2BKCLz3%2F65A%3D%3D; existShop=MTUxMjM4OTUyNg%3D%3D; lgc=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; tracknick=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; cookie2=3355e2a725b37da4b7c113f3def1f1f7; skt=ef36b8c0e19e72d3; t=7a6950203c53d620ab6f0c16c4928a6c; _cc_=Vq8l%2BKCLiw%3D%3D; tg=0; linezing_session=NKYCLGnjBqZcbF5hZR80OFTY_1512389656967YIV6_6; ucn=unzbyun; whl=-1%260%260%261512398950570; _tb_token_=33e11e6d13736; mt=ci=-1_0; uc1=cookie14=UoTdeA0IO3JMiw%3D%3D&lng=zh_CN&cookie16=Vq8l%2BKCLySLZMFWHxqs8fwqnEw%3D%3D&existShop=false&cookie21=U%2BGCWk%2F7p4mBoUyS4E9C&tag=8&cookie15=URm48syIIVrSKA%3D%3D&pas=0; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1%26_ato%3D0; isg=Alxc60vnakD4HR3OtTgw9gy8LXPOfR6Rh7SjDTZd2scvgf4LXucYjjc5ld-C'
+    header['cookie'] = 'miid=2204118637502781093; v=0; cna=OldwEsEx8ggCAXUg2BpcrJoP; hng=CN%7Czh-CN%7CCNY%7C156; thw=cn; UM_distinctid=15f8c5b57023a5-0160ece53b0bf5-1227170b-1fa400-15f8c5b5705492; tk_trace=oTRxOWSBNwn9dPy4KVJVbutfzK5InlkjwbWpxHegXyGxPdWTLVRjn23RuZzZtB1ZgD6Khe0jl%2BAoo68rryovRBE2Yp933GccTPwH%2FTbWVnqEfudSt0ozZPG%2BkA1iKeVv2L5C1tkul3c1pEAfoOzBoBsNsJySRNvOSY9xGDUNOPipFnPYpbkOlsF%2FySSuK1LjLRXwSVrAAJ6uhqKKgwAhm7Vn6J%2F%2BBQum9LSSkQ7juhP8Wptgb59VNPre3M56pSRUjc6yCmUNijDS8RYxfRd7QyT7lHjTOJ8LuMu9HsodGNX5qWeLi6%2FnMyd6UjDQfoo8Mzk%2F5Pd2L7%2FbC0IXdJfO; uc3=nk2=tPEAllpDUYwe5KgY&id2=UUBb2LhspNHhgw%3D%3D&vt3=F8dBzLQKZIXfZohL%2FCg%3D&lg2=Vq8l%2BKCLz3%2F65A%3D%3D; existShop=MTUxMjM4OTUyNg%3D%3D; lgc=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; tracknick=%5Cu6700%5Cu7231%5Cu831C%5Cu831C1228; cookie2=3355e2a725b37da4b7c113f3def1f1f7; skt=ef36b8c0e19e72d3; t=7a6950203c53d620ab6f0c16c4928a6c; _cc_=Vq8l%2BKCLiw%3D%3D; tg=0; linezing_session=NKYCLGnjBqZcbF5hZR80OFTY_1512389656967YIV6_6; ucn=unzbyun; whl=-1%260%260%261512398950570; mt=ci=-1_0; _tb_token_=33e11e6d13736; uc1=cookie16=URm48syIJ1yk0MX2J7mAAEhTuw%3D%3D&cookie21=W5iHLLyFeYZ1WM9hVnmS&cookie15=UIHiLt3xD8xYTw%3D%3D&existShop=false&pas=0&cookie14=UoTdeAz6n1RWTQ%3D%3D&tag=8&lng=zh_CN; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1%26_ato%3D0; isg=AlNThpF3DUp1QMJTptW340954t69oPmkpFGcMAVw5HKqhHImjdoPGK3cysIR'
     #html = url + str(id)
     #print(html)
     res = ''
@@ -114,7 +115,6 @@ def parse_html(id,url):
     #     print("http://%s" % (proxy))
     #     print(r.text)
     return r.text
-    time.sleep(10)
     #delete_proxy(proxy)
 def parse(info,html):
     try:
@@ -143,7 +143,7 @@ def parse(info,html):
             #if(i>3):
                 #break
             info.append([price , title ,sale,addr])
-            time.sleep(5)
+            #time.sleep(5)
     except:
         print("")
 def display(info):
@@ -153,14 +153,14 @@ def display(info):
     for g in info:
         count+=1
         print(dislist.format(count , g[0] , g[1],g[2] , g[3]))
-def main():
-    goods = input('请输入查询商品名称：  ')
-    depth = input('请输入查询页数：    ')
+
+
+info = []
+def spider(depth,goods):
     start_url = 'https://s.taobao.com/search?q='+str(goods)
-    info = []
     get_proxy()
     #print(proxy_ip)
-    for i in range (int(depth)):
+    for i in range (int(depth)-10,int(depth)):
         try:
             url = start_url+'&s='+str(44*i)
             html = gethtml(url)
@@ -169,5 +169,17 @@ def main():
             print('web wrong %s' %url)
             continue
     #display(info)
+threads = []
+def main ():
+    goods = input('请输入查询商品名称：  ')
+    depth = 100
+    gc.disable()               #停止垃圾回收
+    for i in range(1,11):
+        t = threading.Thread(target=spider(str(i*10),goods))
+        threads.append(t)
+    for t in threads :
+        t.start()
+    t.join()
+    gc.enable()
     writefile(goods,info)
 main()
