@@ -1,4 +1,4 @@
-This is a program about check new attendance and notification.
+This is a program about check new Attendance and notification.
 
 To use this script you need do as follow:
   ***first you need have pip3*** 

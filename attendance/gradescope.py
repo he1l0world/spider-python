@@ -60,7 +60,7 @@ def read_cookies(filename):
     try :
         cookies = open(filename, "r")
     except:
-        print("open cookies.txt file failed")
+        print("open cookies.txt file failed, Pls write your own cookies into cookies.txt")
         exit()
     cookie = cookies.read()
     cookies.close()
