@@ -73,8 +73,12 @@ def pop_notification():
 
 
 def check_attendance(url, header, check = 'Attendance 1'):
-    s = requests.session()
-    re = s.get(url, headers = header)
+    try:
+        s = requests.session()
+        re = s.get(url, headers = header)
+    except:
+        print("request failed pls contact me!")
+        exit()
     #cookie = cookiejar.CookieJar()
     #cookie_support = request.HTTPCookieProcessor(cookie)
     #opener = request.build_opener(cookie_support)
