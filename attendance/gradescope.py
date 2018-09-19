@@ -23,7 +23,7 @@ def main ():
     if course == 8:
         url = url_8am
     elif course == 11:
-        url = url_10am
+        url = url_11am
     else:
         print('Pls choose 8 or 11')
         exit(0)
