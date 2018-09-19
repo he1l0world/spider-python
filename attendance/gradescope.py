@@ -8,9 +8,22 @@ import tkinter as tk
 
 def main ():
     filename = 'cookies.txt'
+    try:
+        course = int(input("Pls enter which course you taking(number) eg: 8 or 11\n"))
+    except ValueError:
+        print("Pls enter valid number")
+        exit()
     cookies = read_cookies(filename)
-    check = input('Pls Enter your check attendance: ')
-    url = 'https://www.gradescope.com/courses/21587'
+    check = input('Pls Enter which attendance you wanna: eg: Attendance 10 or Section Attendance 2\n')
+
+
+    url_8am = 'https://www.gradescope.com/courses/21587'
+    url_10am = 'https://www.gradescope.com/courses/21588'
+    if course == 8:
+        url = url_8am
+    elif course == 10:
+        url = url_10am
+
     header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
@@ -34,7 +47,7 @@ def main ():
             exit(0)
         else:
             print(time.asctime(time.localtime(time.time())),' Failed to find the', check)
-        time.sleep(60)
+        time.sleep(59)
 
 
 #def get_window():
@@ -44,6 +57,7 @@ def read_cookies(filename):
         cookies = open(filename, "r")
     except:
         print("open cookies.txt file failed")
+        exit()
     cookie = cookies.read()
     cookies.close()
     return cookie
