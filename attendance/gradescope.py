@@ -18,11 +18,15 @@ def main ():
 
 
     url_8am = 'https://www.gradescope.com/courses/21587'
-    url_10am = 'https://www.gradescope.com/courses/21588'
+    url_11am = 'https://www.gradescope.com/courses/21588'
+    url = ''
     if course == 8:
         url = url_8am
-    elif course == 10:
+    elif course == 11:
         url = url_10am
+    else:
+        print('Pls choose 8 or 11')
+        exit(0)
 
     header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate, br',
@@ -78,7 +82,7 @@ def check_attendance(url, header, check = 'Attendance 1'):
     #res = res.read().decode('utf-8')
     re.encode = 'utf-8'
     html = re.text
-    soup = bs(html,'lxml')
+    soup = bs(html,'html.parser')
     for items in soup.find_all('a'):
         if check in items:
             return True
