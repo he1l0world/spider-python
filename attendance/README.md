@@ -5,7 +5,7 @@ To use this script you need do as follow:
   
   Then type this command in your terminal:
   ```
-   pip install -r requirements.txt
+   pip3 install -r requirements.txt
   ```
   
   create cookies.txt and write your cookies into it.(Don't put leading space on head)
