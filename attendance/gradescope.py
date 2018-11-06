@@ -51,7 +51,7 @@ def main ():
             exit(0)
         else:
             print(time.asctime(time.localtime(time.time())),' Failed to find the', check)
-        time.sleep(59)
+        time.sleep(9)
 
 
 #def get_window():
